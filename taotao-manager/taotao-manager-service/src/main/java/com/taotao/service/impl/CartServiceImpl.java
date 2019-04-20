@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.taotao.commom.result.ReturnType;
 import com.taotao.common.pojo.TaotaoResult;
 import com.taotao.mapper.TbCartMapper;
 import com.taotao.pojo.TbCart;
@@ -23,14 +24,24 @@ public class CartServiceImpl implements CartService {
 	private TbCartMapper cartMapper;
 	
 	@Override
-	public void addCart(TbCart cart) {
+	public TaotaoResult addCart(TbCart cart) {
+		//判断是否已经添加该商品
+		TbCartExample example = new TbCartExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andUsernameEqualTo(cart.getUsername());
+		criteria.andTitleEqualTo(cart.getTitle());
+		List<TbCart> list = cartMapper.selectByExample(example);
+		
+		if (list != null &&list.size() > 0) { //则该商品已存在
+			return TaotaoResult.ok(ReturnType.ERROR);
+		}
 		TbCart tbCart = new TbCart();
 		//补全TbCart对象
 		tbCart.setId(null);
 		tbCart.setUsername(cart.getUsername());
 		tbCart.setTitle(cart.getTitle());
 		tbCart.setPrice(cart.getPrice());
-		tbCart.setNum(cart.getNum());
+		tbCart.setNum(1); //默认为1件
 		tbCart.setImage(cart.getImage());
 		
 		tbCart.setStatus((byte)0); //状态：0（未支付），1（已支付）
@@ -41,6 +52,7 @@ public class CartServiceImpl implements CartService {
 		tbCart.setUpdated(date);
 		
 		cartMapper.insert(tbCart); //插入数据
+		return TaotaoResult.ok(ReturnType.SUCCESS);
 	}
 
 	@Override
@@ -82,6 +94,21 @@ public class CartServiceImpl implements CartService {
 		
 		//同步到数据库
 		cartMapper.updateByExample(upCart, example);
+	}
+
+	@Override
+	public TaotaoResult getCart(String username) {
+		TbCartExample example = new TbCartExample();
+		Criteria criteria = example.createCriteria();
+		
+		//username和title唯一确定一条记录
+		criteria.andUsernameEqualTo(username);
+		
+		List<TbCart> list = cartMapper.selectByExample(example);
+		if (list == null && list.size() <= 0) {
+			return TaotaoResult.ok(ReturnType.ERROR);
+		}
+		return TaotaoResult.ok(list);
 	}
 
 }

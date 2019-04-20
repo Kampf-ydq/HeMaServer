@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -57,6 +58,24 @@ public class UserController {
 		return TaotaoResult.ok(user);
 	}
 	
+	@RequestMapping("/logOut")
+	@ResponseBody
+	public TaotaoResult logOut(HttpSession session){
+		session.removeAttribute("loginUser");
+		return TaotaoResult.ok();
+	}
+	
+	@RequestMapping("/selectUser/{username}")
+	@ResponseBody
+	public TaotaoResult selectUserByUsername(@PathVariable String username){
+	    if (username != null) {
+			TbUser user = userService.selectUserByUsername(username);
+			return TaotaoResult.ok(user);
+		}
+		return TaotaoResult.ok();
+	}
+	
+	
 	@RequestMapping("/addUser")
 	@ResponseBody
 	public TaotaoResult addUser(@RequestBody TbUser user){
@@ -93,8 +112,7 @@ public class UserController {
 	@ResponseBody
 	public TaotaoResult updateNick(@RequestBody TbUser user){
 		if (user.getNickname() != null) {
-			userService.updateNick(user);
-			return TaotaoResult.ok(user.getNickname());
+			return TaotaoResult.ok(userService.updateNick(user));
 		}
 		return TaotaoResult.ok(ReturnType.ERROR);
 	}

@@ -2,6 +2,7 @@ package com.taotao.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,8 +26,16 @@ public class CartController {
 	@ResponseBody
 	public TaotaoResult addCart(@RequestBody TbCart cart){
 		if (cart != null) {
-			cartService.addCart(cart);
-			return TaotaoResult.ok(ReturnType.SUCCESS);
+			return TaotaoResult.ok(cartService.addCart(cart));
+		}
+		return TaotaoResult.ok(ReturnType.ERROR);
+	}
+	
+	@RequestMapping("/showCart/{username}")
+	@ResponseBody
+	public TaotaoResult showCart(@PathVariable String username){
+		if (username != null) {
+			return TaotaoResult.ok(cartService.getCart(username));
 		}
 		return TaotaoResult.ok(ReturnType.ERROR);
 	}

@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.taotao.common.pojo.TaotaoResult;
 import com.taotao.mapper.TbUserMapper;
 import com.taotao.pojo.TbUser;
 import com.taotao.pojo.TbUserExample;
@@ -41,7 +40,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateNick(TbUser user) {
+	public TbUser updateNick(TbUser user) {
 		TbUserExample example = new TbUserExample();
 		Criteria criteria = example.createCriteria();
 		
@@ -54,7 +53,11 @@ public class UserServiceImpl implements UserService {
 		TbUser dbUser = list.get(0);
 		dbUser.setNickname(user.getNickname());
 		//执行更新操作
-		userMapper.updateByExample(dbUser, example);	
+		userMapper.updateByPrimaryKey(dbUser);
+		
+		//隐藏密码
+		dbUser.setPassword(null);
+		return dbUser;
 	}
 
 	@Override
@@ -79,6 +82,15 @@ public class UserServiceImpl implements UserService {
 		//隐藏密码
 		dbUser.setPassword(null);
 		return dbUser;
+	}
+
+	@Override
+	public TbUser selectUserByUsername(String username) {
+		TbUserExample example = new TbUserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andUsernameEqualTo(username);
+		List<TbUser> list = userMapper.selectByExample(example);
+		return list.get(0);
 	}
 
 }
