@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>喝吗鲜生-购物车</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<script src="js/jquery-2.1.1.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="js/cart.js"></script>
+	
+</head>
+<body>
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到喝吗鲜生!</div>
+			<div class="fr">
+				<div class="user_link fl">
+					<a href="index.html">首页</a>
+					<span>|</span>
+					<a href="user_center_info.html">用户中心</a>
+					<span>|</span>
+					<a id="logout">注销</a>
+					<!--注销窗口-->
+					<div id="logout_window" style="display: none; margin:auto;top: 25%;left: 45%; width: 300px; height: 250px; background-color: rgba(0,0,0,0.5);z-index: 2;position: fixed;border:1px solid #e0e0e0; border-radius: 8px;">
+						<ul style="margin: 10px;">
+							<li style="text-align: center;"><span style="font-size: 14px;color: #fff;margin-top: 30px;">北极星工作室提醒您</span></li>
+							<br/>
+							<li style="text-align: center;margin-top: 10px;"><span style="font-size: 20px;color: #fff;margin-top: 30px;">是否注销</span></li>
+							<br/>
+							<li style="text-align: center;font-size: 14px;margin-top: 10px;">
+								<input type="button" class="submit1" id="logout_yes" value="确认" style="width: 60px;height: 28px;background: #000000;opacity:0.5;border: 0px;outline: none;color: #fff;margin-right: 10px;"/>
+								<input type="button" class="submit1" id="logout_cancel" value="取消" style="width: 60px;height: 28px;background: #000000;opacity:0.5;border: 0px;outline: none;color: #fff;margin-left: 10px;"/>
+							</li>
+							
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>		
+	</div>
+
+	<div class="search_bar clearfix">
+		<a href="index.html" class="logo fl"><img src="images/logo.jpg"></a>
+		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;购物车</div>
+		<!--<div class="search_con fr">
+			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
+			<input type="button" class="input_btn fr" name="" value="搜索">
+		</div>-->		
+	</div>
+
+	<ul class="cart_list_th clearfix" id="cart">
+		<li class="col01">商品名称</li>
+		<li class="col02">商品单位</li>
+		<li class="col03">商品价格</li>
+		<li class="col04">数量</li>
+		<li class="col05">小计</li>
+		<li class="col06">操作</li>
+	</ul>
+	<!--<ul class="cart_list_td clearfix">
+		<li class="col01"></li>
+		<li class="col02"><img src="images/goods/goods012.jpg"></li>
+		<li class="col03">奇异果<br><em>25.80元/500g</em></li>
+		<li class="col04">500g</li>
+		<li class="col05">25.80元</li>
+		<li class="col06">
+			<div class="num_add">
+				<input type="button" value="+" onclick="increase(this);" style="height: 28px;width: 29px;"/>
+       			<input style="text-align: center;" type="text" size="3" readonly class="num_show fl" value="1"/> 
+       			<input type="button" value="-" onclick="decrease(this);" style="height: 28px;width: 29px;"/>
+			</div>
+		</li>
+		<li class="col07">25.80元</li>
+		<li class="col08"><input type="button" value="删除" onclick="drop(this);"/></li>
+	</ul>
+
+	<ul class="cart_list_td clearfix">
+		<li class="col01"></li>
+		<li class="col02"><img src="images/goods/goods003.jpg"></li>
+		<li class="col03">大兴大棚草莓<br><em>16.80元/500g</em></li>
+		<li class="col04">500g</li>
+		<li class="col05">16.80元</li>
+		<li class="col06">
+			<div class="num_add">
+				<input type="button" value="+" onclick="increase(this);" style="height: 28px;width: 29px;"/>
+       			<input style="text-align: center;" type="text" size="3" readonly class="num_show fl" value="1"/> 
+       			<input type="button" value="-" onclick="decrease(this);" style="height: 28px;width: 29px;"/>
+			</div>
+		</li>
+		<li class="col07">16.80元</li>
+		<li class="col08"><input type="button" value="删除" onclick="drop(this);"/></li>
+	</ul>-->
+	
+
+	<ul class="settlements">
+		<li class="col01"></li>
+		<li class="col02"></li>
+		<li class="col03">合计(不含运费)：<span>¥</span><em id="total">0.00</em><br>共计<b id="num">0</b>件商品</li>
+		<li class="col04">
+			<a  href="#" id="settlement">去结算</a>
+		</li>
+	</ul>
+	<!--结算窗口-->
+	<div id="place_order">
+		<ul style="margin: 15px;">
+			<li style="text-align: right;"><input type="button" id="closePlace_order" value="X" /></li>
+			<li>
+				<span style="font-size: 14px;">姓名：</span><input id="user_name" disabled="disabled" style="font-size: 16px;"/>
+			</li>
+			<br/>
+			<li>
+				<span style="font-size: 14px;">电话：</span><input id="user_phone" disabled="disabled" style="font-size: 16px;"/>
+			</li>
+			<br/>
+			<li>
+				<span style="font-size: 14px;">收货地址：</span><input id="user_place" disabled="disabled" style="font-size: 16px;"/>
+			</li>
+			<br/>
+			<li>
+				<span style="font-size: 14px;">付款金额：<a style="font-size: 12px;color: #FF3D3D;">¥ </a></span><input id="money" disabled="disabled" style="color: red;font-size: 18px;"/> 
+			</li>
+			<br/>
+			<li><div style="width: 100%;border:0.5px solid #e0e0e0;"></div></li>
+			<li style="text-align: center;margin-top: 5px;">
+				<span style="font-size: 14px;">请扫码付款</span><span style="color:green">(支持微信 支付宝)</span>
+			</li>
+			<br/>
+			<li style="text-align: center;">
+				<!--换成二维码-->
+				<img src="images/zhifu.jpg"/>
+			</li>
+			<br/>
+			<!--分割线-->
+			<li><div style="width: 100%;border:0.5px solid #e0e0e0;"></div></li>
+			<li style="text-align: center;margin-top: 10px;"><span style="font-size: 12px;">CopyRight © 2019 沈工大北极星工作室</span></li>
+		</ul>
+	</div>
+	<!--小窗口弹出后的遮罩层-->
+	<div id="shadow"></div>
+	
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2019 沈工大北极星工作室 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+	<style>
+		/*遮罩层*/
+		#shadow {
+			width: 100%;
+			height: 100%;
+			background-color: #000;
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 2;
+			opacity: 0.3;
+			filter: alpha(opacity=30);
+			display: none;
+		}
+		#place_order{
+			display: none;
+			border:1px solid #e0e0e0;
+			border-radius: 5px;
+			width: 375px;
+			height: 500px;
+			z-index: 3;
+			background: white;
+			position: fixed;
+			top:10%;
+			left:37%;
+		}
+		#place_order img{
+			width: 200px;
+			height: 200px;
+		}
+		#user_name,#user_phone,#user_place,#money{
+			border: none;
+			background-color: white;
+			font-size: 15px;
+		}
+		#closePlace_order{
+				width: 30px;
+				height: 20px;
+				position: relative;
+				display: inline-block;
+				background: white;
+				border: 0px;
+				border-radius: 5px;
+				overflow: hidden;
+				color: block;
+				border: 0px;
+				outline: none;
+		}
+		#closePlace_order:hover{
+			background-color:#C6C6C5;;
+		}
+
+		
+	</style>
+	<script type="text/javascript">
+		//注销窗口
+		$(document).ready(function() {
+			$('#logout').click(function() {
+				//$(this).setAttribute("class","active");
+				$('#logout_window').toggle();
+			});
+		});
+		
+		//确认注销
+		$(document).ready(function(){
+			$('#logout_yes').click(function(){
+				$.ajax({
+					type:"get",
+					url:"http://localhost:8080/logOut",
+					dataType:'json',
+					async:true,
+					xhrFields: {
+						withCredentials: true
+					},
+					rossDomain: true,
+					success:function(res){
+						if(res.status === 200){
+							alert("注销成功");
+							location.href = "index.html";
+						}else{
+							alert("注销失败");
+						}
+					}
+			    });
+			    $('#logout_window').toggle();
+			});
+		});
+		
+		//取消注销
+		$(document).ready(function(){
+			$('#logout_cancel').click(function(){
+			    $('#logout_window').toggle();
+			});
+		});
+	</script>
+</body>
+</html>
